@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <title>チケットマネージャー</title>
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <main>
+    <input type="file" id="tickets" accept=".txt" multiple/>
+    <p id="result"></p>
+    <button id="btnOutputResult">集計結果出力</button>
+    <table id="details">
+      <tbody id="detailsBody">
+        <tr id="header"><th>ID</th><th>起票日</th><th>完了日</th><th>起票者</th><th>担当者</th><th>標題</th></tr>
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>
