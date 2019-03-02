@@ -15,6 +15,10 @@ const tbdyDetails = document.querySelector('#detailsBody');
 const elResult = document.querySelector('#result');
 const btnOutputResult = document.querySelector('#btnOutputResult');
 
+// 年月日表示形式変換(YYYYMMDD > YYYY/MM/DD)
+function convertYYYYMMDD (yyyymmdd) {
+  return yyyymmdd.substr(0, 4) + '/' + yyyymmdd.substr(4, 2) + '/' + yyyymmdd.substr(6, 2);
+}
 
 // ファイル選択ダイアログからファイルが選択された場合の処理
 elTicket.addEventListener('change', (event) => {
@@ -25,7 +29,7 @@ elTicket.addEventListener('change', (event) => {
   // TODO:ソートは数値以外が含まれても対応できるように考慮する。
   for (let file of files) {
     const data = file.name.replace('.txt', '').split('_');
-    list.push({ id: data[0], issueDay: data[1], closingDay: data[2], issuer: data[3], worker: data[4], title: data[5] });
+    list.push({ id: data[0], issueDay: convertYYYYMMDD(data[1]), closingDay: convertYYYYMMDD(data[2]), issuer: data[3], worker: data[4], title: data[5] });
   }
   list.sort((a, b) => {return a.id - b.id;});
   
@@ -63,7 +67,7 @@ elTicket.addEventListener('change', (event) => {
 // 集計結果出力ボタン押下時の処理
 btnOutputResult.addEventListener('click', () => {
   // チケットのリストをファイル出力用の文字列に編集
-  let strBuffer = '';
+  let strBuffer = 'ID\t起票日\t完了日\t起票者\t担当者\t標題\n';
   for (let detail of list) {
     strBuffer += detail.id + '\t' + detail.issueDay + '\t' + detail.closingDay + '\t' + detail.issuer + '\t' + detail.worker + '\t' + detail.title + '\n';
   }
