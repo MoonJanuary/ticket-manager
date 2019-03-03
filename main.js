@@ -1,5 +1,7 @@
 'use strict';
-
+// TODO:ライセンス関係の署名を追加
+// TODO:JSDoc準拠のヘッダコメントに変更
+// TODO:打検をして品質を上げる
 // 定数
 const HTML_DETAIL = '<tr class="detail"><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
 
@@ -10,10 +12,10 @@ let cntClosed = 0;   // 完了数
 let progress = 0;    // 進捗(パーセンテージ、小数点以下切り捨て)
 
 // 要素の参照を取得
-const elTicket = document.querySelector('#tickets');
-const tbdyDetails = document.querySelector('#detailsBody');
-const elResult = document.querySelector('#result');
-const btnOutputResult = document.querySelector('#btnOutputResult');
+const inputTickets = document.querySelector('#tickets');          // 選択したチケット
+const pResult = document.querySelector('#result');                // 集計結果
+const btnOutputResult = document.querySelector('#outputResult');  // 集計結果出力ボタン
+const tbodyDetails = document.querySelector('#details');          // 明細テーブルのボディ
 
 // 年月日表示形式変換(YYYYMMDD > YYYY/MM/DD)
 function convertYYYYMMDD (yyyymmdd) {
@@ -21,7 +23,7 @@ function convertYYYYMMDD (yyyymmdd) {
 }
 
 // ファイル選択ダイアログからファイルが選択された場合の処理
-elTicket.addEventListener('change', (event) => {
+inputTickets.addEventListener('change', (event) => {
   const target = event.target;
   const files = target.files;
   
@@ -38,17 +40,17 @@ elTicket.addEventListener('change', (event) => {
   for (let detail of list) {
   
     // 各セルに値を設定
-    tbdyDetails.insertAdjacentHTML('beforeend', HTML_DETAIL);
-    tbdyDetails.rows[i].cells[0].appendChild(document.createTextNode(detail.id));
-    tbdyDetails.rows[i].cells[1].appendChild(document.createTextNode(detail.issueDay));
-    tbdyDetails.rows[i].cells[2].appendChild(document.createTextNode(detail.closingDay));
-    tbdyDetails.rows[i].cells[3].appendChild(document.createTextNode(detail.issuer));
-    tbdyDetails.rows[i].cells[4].appendChild(document.createTextNode(detail.worker));
-    tbdyDetails.rows[i].cells[5].appendChild(document.createTextNode(detail.title));
+    tbodyDetails.insertAdjacentHTML('beforeend', HTML_DETAIL);
+    tbodyDetails.rows[i].cells[0].appendChild(document.createTextNode(detail.id));
+    tbodyDetails.rows[i].cells[1].appendChild(document.createTextNode(detail.issueDay));
+    tbodyDetails.rows[i].cells[2].appendChild(document.createTextNode(detail.closingDay));
+    tbodyDetails.rows[i].cells[3].appendChild(document.createTextNode(detail.issuer));
+    tbodyDetails.rows[i].cells[4].appendChild(document.createTextNode(detail.worker));
+    tbodyDetails.rows[i].cells[5].appendChild(document.createTextNode(detail.title));
     i++;
     
     // 完了したチケット数をカウント
-    if (detail.closingDay !== '00000000') {
+    if (detail.closingDay !== '0000/00/00') {
       cntClosed++;
     }
   }
@@ -60,7 +62,7 @@ elTicket.addEventListener('change', (event) => {
   progress = Math.trunc(cntClosed / cntTickets * 100);
   
   // 集計結果を出力
-  elResult.innerHTML = 'チケット数:' + cntTickets + '&nbsp完了数:' + cntClosed + '&nbsp進捗率:' + progress + '%';
+  pResult.innerHTML = 'チケット数:' + cntTickets + '&nbsp完了数:' + cntClosed + '&nbsp進捗率:' + progress + '%';
 });
 
 
@@ -96,7 +98,7 @@ btnOutputResult.addEventListener('click', () => {
     document.body.removeChild(a);
   } else {
     // その他
-    const base64ResultFile = 'data:text/plain,' + encodeURIComponent(elResult.textContent);
+    const base64ResultFile = 'data:text/plain,' + encodeURIComponent(pResult.textContent);
     window.open(base64ResultFile, '_blank');
   }
 });
