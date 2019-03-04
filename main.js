@@ -2,27 +2,44 @@
 // TODO:ライセンス関係の署名を追加
 // TODO:JSDoc準拠のヘッダコメントに変更
 // TODO:打検をして品質を上げる
+
 // 定数
+/** 明細の空行のHTML */
 const HTML_DETAIL = '<tr class="detail"><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
 
 // グローバル変数
-let list = [];       // チケット情報のリスト
-let cntTickets = 0;  // チケット数
-let cntClosed = 0;   // 完了数
-let progress = 0;    // 進捗(パーセンテージ、小数点以下切り捨て)
+/** チケット情報のリスト */
+let list = [];
+/** チケット数 */
+let cntTickets = 0;
+/** 完了数 */
+let cntClosed = 0;
+/** 進捗(パーセンテージ、小数点以下切り捨て) */
+let progress = 0;
 
 // 要素の参照を取得
-const inputTickets = document.querySelector('#tickets');          // 選択したチケット
-const pResult = document.querySelector('#result');                // 集計結果
-const btnOutputResult = document.querySelector('#outputResult');  // 集計結果出力ボタン
-const tbodyDetails = document.querySelector('#details');          // 明細テーブルのボディ
+/** 選択したチケット */
+const inputTickets = document.querySelector('#tickets');
+/** 集計結果 */
+const pResult = document.querySelector('#result');
+/** 集計結果出力ボタン */
+const btnOutputResult = document.querySelector('#outputResult');
+/** 明細テーブルのボディ */
+const tbodyDetails = document.querySelector('#details');
 
-// 年月日表示形式変換(YYYYMMDD > YYYY/MM/DD)
+/**
+ * 年月日表示形式変換(YYYYMMDD > YYYY/MM/DD)
+ * @param yyyymmdd YYYYMMDD形式の年月日
+ * @return YYYY/MM/DD形式の年月日
+ */
 function convertYYYYMMDD (yyyymmdd) {
   return yyyymmdd.substr(0, 4) + '/' + yyyymmdd.substr(4, 2) + '/' + yyyymmdd.substr(6, 2);
 }
 
-// ファイル選択ダイアログからファイルが選択された場合の処理
+/**
+ * ファイル選択ダイアログからファイルが選択された場合の処理
+ * @event
+ * */
 inputTickets.addEventListener('change', (event) => {
   const target = event.target;
   const files = target.files;
@@ -65,8 +82,11 @@ inputTickets.addEventListener('change', (event) => {
   pResult.innerHTML = 'チケット数:' + cntTickets + '&nbsp完了数:' + cntClosed + '&nbsp進捗率:' + progress + '%';
 });
 
-
-// 集計結果出力ボタン押下時の処理
+/**
+ * 集計結果出力ボタン押下時の処理
+ * @event
+ */
+// 
 btnOutputResult.addEventListener('click', () => {
   // チケットのリストをファイル出力用の文字列に編集
   let strBuffer = 'ID\t起票日\t完了日\t起票者\t担当者\t標題\n';
