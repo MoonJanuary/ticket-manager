@@ -1,10 +1,10 @@
 'use strict';
 // TODO:ライセンス関係の署名を追加
-// TODO:JSDoc準拠のヘッダコメントに変更
 // TODO:打検をして品質を上げる
 
 // 定数
 /** 明細の空行のHTML */
+const HTML_HEADER = '<tr id="header"><th>ID</th><th>起票日</th><th>完了日</th><th>起票者</th><th>担当者</th><th>標題</th></tr>';
 const HTML_DETAIL = '<tr class="detail"><td></td><td></td><td></td><td></td><td></td><td></td></tr>';
 
 // グローバル変数
@@ -41,6 +41,13 @@ function convertYYYYMMDD (yyyymmdd) {
  * @event
  * */
 inputTickets.addEventListener('change', (event) => {
+
+  // 初期化
+  list = [];
+  tbodyDetails.textContent = null;
+  cntClosed = 0;
+  
+  // 入力ファイルのリストを取得
   const target = event.target;
   const files = target.files;
   
@@ -53,6 +60,7 @@ inputTickets.addEventListener('change', (event) => {
   list.sort((a, b) => {return a.id - b.id;});
   
   // チケット情報のリストからテーブルを生成
+  tbodyDetails.insertAdjacentHTML('beforeend', HTML_HEADER);
   let i = 1;
   for (let detail of list) {
   
