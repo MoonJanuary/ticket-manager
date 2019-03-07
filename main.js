@@ -52,12 +52,19 @@ inputTickets.addEventListener('change', (event) => {
   const files = target.files;
   
   // 選択したファイル名からチケット情報のリストを作成(IDの昇順でソート)
-  // TODO:ソートは数値以外が含まれても対応できるように考慮する。
   for (let file of files) {
     const data = file.name.replace('.txt', '').split('_');
     list.push({ id: data[0], issueDay: convertYYYYMMDD(data[1]), closingDay: convertYYYYMMDD(data[2]), issuer: data[3], worker: data[4], title: data[5] });
   }
-  list.sort((a, b) => {return a.id - b.id;});
+  list.sort((a, b) => {
+    if (a.id < b.id) {
+      return -1;
+    } else if (a.id > b.id) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
   
   // チケット情報のリストからテーブルを生成
   tbodyDetails.insertAdjacentHTML('beforeend', HTML_HEADER);
